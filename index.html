@@ -7,13 +7,29 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="count">0</div>
-    <div id="buttons">
-    <button class = "button" id="increment">Increment</button>
-    <button class = "button" id="decrement">Decrement</button>
-    <button class = "button" id="reset">Reset</button>
+    <div id="main">
+        <nav id="nav">
+            <p id = "logo"><span>Naam</span>Jaap</p>
+        </nav>
+        <div id="body">
+            <div id="count">0</div>
+            <div class="buttons">
+                <button class = "counting-unit">
+                    <span id = "mala">0</span> <br>
+                    <span class = "innr-unit">Mala</span>
+                </button>
+                <button class = "counting-unit">
+                    <span id = "jaap">0</span> <br>
+                    <span class="innr-unit">Jaap</span>
+                </button>
+            </div>
+            <div id="buttons">
+                <button class = "button" id="increment">Count +</button>
+                <button class = "button" id="reset">Reset</button>
+            </div>
+            <div id ="day"></div>
+        </div>
     </div>
-    <div id ="day"></div>
     <script src="script.js"></script>
 </body>
 </html>
