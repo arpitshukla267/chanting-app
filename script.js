@@ -20,7 +20,7 @@ let count = parseInt(localStorage.getItem('count')) || 0;
 countElement.innerText = count;
  
 
-let jaapCount = parseInt(localStorage.getItem('count')) || 0;
+let jaapCount = parseInt(localStorage.getItem('jaap')) || 0;
 jaap.innerText = jaapCount;
 
 let malaCount = parseInt(localStorage.getItem('mala')) || 0;
