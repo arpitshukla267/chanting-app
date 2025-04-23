@@ -94,13 +94,13 @@ body{
     margin-bottom: 20px;
     animation: slide 10s linear infinite;
     word-spacing: 8px;
-    word-wrap: nowrap;
+    white-space: nowrap;
     overflow: hidden;
 }
 
 @keyframes slide {
     from {
-        transform: translateX(-100%); /* Corrected property */
+        transform: translateX(-90%); /* Corrected property */
     }
     to {
         transform: translateX(100%); /* Corrected property */
