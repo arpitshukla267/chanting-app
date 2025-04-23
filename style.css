@@ -85,28 +85,6 @@ body{
     right: 20px;
 }
 
-#title{
-    width: 100%;
-    font-size: 50px;
-    color: black;
-    opacity: 0.8;
-    text-align: center;
-    margin-bottom: 20px;
-    animation: slide 10s linear infinite;
-    word-spacing: 8px;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-@keyframes slide {
-    from {
-        transform: translateX(-90%); /* Corrected property */
-    }
-    to {
-        transform: translateX(100%); /* Corrected property */
-    }
-}
-
 @media screen and (max-width: 475px) {
     .button{
         font-size: 10px;
