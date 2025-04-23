@@ -94,6 +94,8 @@ body{
     margin-bottom: 20px;
     animation: slide 10s linear infinite;
     word-spacing: 8px;
+    word-wrap: nowrap;
+    overflow: hidden;
 }
 
 @keyframes slide {
