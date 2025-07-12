@@ -14,40 +14,44 @@ document.addEventListener('DOMContentLoaded', () => {
     'url("image4.jpeg")'
   ];
 
-  // ⬇️ Permanent totals
+  // Permanent totals
   let jaapCount = parseInt(localStorage.getItem('jaap')) || 0;
   let malaCount = parseInt(localStorage.getItem('mala')) || 0;
 
-  // ⬇️ Daily count (black bubble)
+  // Daily count (black bubble)
   let count = parseInt(localStorage.getItem('count')) || 0;
 
   let currentImageIndex = 0;
-
   let dailyCounts = JSON.parse(localStorage.getItem('dailyCounts')) || [];
 
-  // ✅ FIX: Handle invalid or missing date safely
+  // 🔒 FIX: Properly parse lastSavedDate
   let savedDateStr = localStorage.getItem('lastSavedDate');
   let lastSavedDate = new Date(savedDateStr);
+  let lastDateStr;
+
   if (!savedDateStr || isNaN(lastSavedDate.getTime())) {
+    // fallback to today
     lastSavedDate = new Date();
+    lastDateStr = lastSavedDate.toISOString().split('T')[0];
     localStorage.setItem('lastSavedDate', lastSavedDate.toISOString());
+  } else {
+    lastDateStr = lastSavedDate.toISOString().split('T')[0];
   }
 
   function checkAndResetDaily() {
     const now = new Date();
     const todayStr = now.toISOString().split('T')[0];
-    const lastDateStr = lastSavedDate.toISOString().split('T')[0];
 
+    // compare today vs last saved
     if (todayStr !== lastDateStr) {
-      // Save yesterday's daily count
       dailyCounts.push({
         date: lastDateStr,
         count: count
       });
 
-      // Reset only daily black-bubble count
       count = 0;
       lastSavedDate = now;
+      lastDateStr = todayStr;
 
       localStorage.setItem('dailyCounts', JSON.stringify(dailyCounts));
       localStorage.setItem('lastSavedDate', now.toISOString());
@@ -68,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     historyContainer.innerHTML = '';
 
-    // Show Past Chants difference
     const len = dailyCounts.length;
     if (len >= 2) {
       const dayBeforeYesterday = dailyCounts[len - 2].count;
@@ -82,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
       historyContainer.appendChild(pastDiv);
     }
 
-    // Show history with Jaap + Mala per day
     last30Days.slice().reverse().forEach(entry => {
       const dayMala = Math.floor(entry.count / 108);
       const div = document.createElement('div');
@@ -95,8 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
   incrementBtn.addEventListener('click', () => {
     checkAndResetDaily();
 
-    count++;         // ⬅️ Reset daily
-    jaapCount++;     // ⬅️ Total forever
+    count++;
+    jaapCount++;
 
     if (jaapCount % 108 === 0) {
       malaCount++;
@@ -115,7 +117,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.backgroundImage = backgroundImages[currentImageIndex];
   });
 
-  // Initial
   checkAndResetDaily();
   updateUI();
 });
