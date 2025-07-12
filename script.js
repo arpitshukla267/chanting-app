@@ -82,7 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   incrementBtn.addEventListener('click', () => {
     checkAndResetDaily();
-
+    
+    console.log('Incrementing count:', count, 'Jaap:', jaapCount, 'Mala:', malaCount);
     count++;
     jaapCount++;
 
