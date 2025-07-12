@@ -70,8 +70,16 @@ body{
 
 #increment{
     width: 200px;
+    height: 50px;
+    border-radius: 10px;
     letter-spacing: 3px;
     word-spacing: 2px;
+}
+
+#toggle-bg{
+    height: 50px;
+    width: 80px;
+    border-radius: 5px;
 }
 
 #day{
@@ -84,6 +92,35 @@ body{
     bottom: 20px;
     right: 20px;
 }
+
+#history-section {
+  margin-top: 3rem;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  width: 90%;
+  max-width: 500px;
+  color: white;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+#history-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #f1f1f1;
+}
+
+.history-entry {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  animation: fadeInUp 0.5s ease forwards;
+}
+
 
 @media screen and (max-width: 475px) {
     .button{

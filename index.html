@@ -1,35 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naam Jaap Counter</title>
+  <link rel="stylesheet" href="style.css" />
+  <script defer src="script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@500&display=swap" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
 </head>
 <body>
-    <div id="main">
-        <nav id="nav">
-            <p id = "logo"><span>Naam</span>Jaap</p>
-        </nav>
-        <div id="body">
-            <div id="count">0</div>
-            <div class="buttons">
-                <button class = "counting-unit">
-                    <span id = "mala">0</span> <br>
-                    <span class = "innr-unit">Mala</span>
-                </button>
-                <button class = "counting-unit">
-                    <span id = "jaap">0</span> <br>
-                    <span class="innr-unit">Jaap</span>
-                </button>
-            </div>
-            <div id="buttons">
-                <button class = "button" id="increment">Count +</button>
-                <button class = "button" id="reset">Reset</button>
-            </div>
-            <div id ="day"></div>
-        </div>
+  <div id="main">
+    <nav id="nav">
+      <p id="logo"><span>Naam</span>Jaap</p>
+    </nav>
+
+    <div id="body">
+      <div id="count" class="fade-in">0</div>
+
+      <div class="buttons fade-in">
+        <button class="counting-unit" id="mala-btn">
+          <span id="mala">0</span>
+          <span class="innr-unit">Mala</span>
+        </button>
+
+        <button class="counting-unit" id="jaap-btn">
+          <span id="jaap">0</span>
+          <span class="innr-unit">Jaap</span>
+        </button>
+      </div>
+
+      <div class="controls fade-in">
+        <button id="increment"><i class="fas fa-plus"></i></button>
+        <button id="reset"><i class="fas fa-undo-alt"></i></button>
+        <button id="toggle-bg"><i class="fas fa-image"></i></button>
+      </div>
+
+      <div id="history-section" class="fade-in">
+        <h2>Past Chant Counts</h2>
+        <div id="history"></div>
+      </div>
     </div>
-    <script src="script.js"></script>
+  </div>
 </body>
 </html>

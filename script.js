@@ -1,100 +1,109 @@
-const incrementButton = document.getElementById('increment');
-const resetButton = document.getElementById('reset');
 const countElement = document.getElementById('count');
-const dayElement = document.getElementById('day');
 const mala = document.getElementById('mala');
 const jaap = document.getElementById('jaap');
-const main = document.getElementById('main');
+const historyContainer = document.getElementById('history');
+
+const incrementBtn = document.getElementById('increment');
+const resetBtn = document.getElementById('reset');
+const toggleBgBtn = document.getElementById('toggle-bg');
+
 const backgroundImages = [
-    'url("image1.webp")',
-    'url("image2.jpeg")',
-    'url("image3.jpeg")',
-    'url("image4.jpeg")'
+  'url("image1.webp")',
+  'url("image2.jpeg")',
+  'url("image3.jpeg")',
+  'url("image4.jpeg")'
 ];
 
-// Variable to track the current background image index
+let count = parseInt(localStorage.getItem('count')) || 0;
+let malaCount = parseInt(localStorage.getItem('mala')) || 0;
+let jaapCount = parseInt(localStorage.getItem('jaap')) || 0;
 let currentImageIndex = 0;
 
-// Load saved count from localStorage
-let count = parseInt(localStorage.getItem('count')) || 0;
-countElement.innerText = count;
- 
+let dailyCounts = JSON.parse(localStorage.getItem('dailyCounts')) || [];
+let lastSavedDate = localStorage.getItem('lastSavedDate')
+  ? new Date(localStorage.getItem('lastSavedDate'))
+  : new Date();
 
-let jaapCount = parseInt(localStorage.getItem('jaap')) || 0;
-jaap.innerText = jaapCount;
+function checkAndResetDaily() {
+  const now = new Date();
+  const diff = now - new Date(lastSavedDate);
+  if (diff >= 24 * 60 * 60 * 1000) {
+    // Save old count
+    dailyCounts.push({
+      date: lastSavedDate.toISOString().split('T')[0],
+      count: count
+    });
 
-let malaCount = parseInt(localStorage.getItem('mala')) || 0;
-mala.innerText = malaCount;
-
-
-// Function to save count
-function saveCount() {
-    const today = new Date().toLocaleDateString('en-IN', { timeZone: 'Asia/Kolkata' });
-    dayElement.innerText = `Last Day Jaap : 0`; 
-    localStorage.setItem('count', count);
-    localStorage.setItem('mala', malaCount);
-    localStorage.setItem('jaap', jaapCount);
-    localStorage.setItem('lastSavedDate', today);
-}
-
-// Function to reset count every 24 hours
-function checkResetTime() {
-    const now = new Date();
-    const istNow = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
-    const today = istNow.toLocaleDateString('en-IN');
-    const lastSavedDate = localStorage.getItem('lastSavedDate');
-
-    // Check if the date has changed
-    if (lastSavedDate !== today) {
-        dayElement.innerText = `Last Day Jaap : ${count}`; 
-        count = 0; // Reset the count
-        countElement.innerText = count;
-        jaapCount = 0; // Reset jaap count
-        jaap.innerText = jaapCount;
-        malaCount = 0; // Reset mala count
-        mala.innerText = malaCount;
-        saveCount(); // Save the reset count and update the date
-    }
-}
-
-// Increment button functionality
-incrementButton.addEventListener('click', () => {
-    count++;
-    countElement.innerText = count;
-
-    // Change the background image
-    currentImageIndex = (currentImageIndex + 1) % backgroundImages.length; // Cycle through images
-    document.body.style.backgroundImage = backgroundImages[currentImageIndex];
-
-    // Check if count reaches 108
-    if (count === 108) {
-        alert("Congratulations! You have completed 108 naam jaap.");
-        malaCount++;
-        mala.innerText = malaCount;
-        count = 0; // Reset count for the next cycle
-        countElement.innerText = count;
-    }
-
-    jaapCount++;
-    jaap.innerText = jaapCount;
-
-    saveCount();
-});
-
-
-// Reset button functionality
-resetButton.addEventListener('click', () => {
+    // Reset today's count
     count = 0;
-    countElement.innerText = count;
     jaapCount = 0;
-    jaap.innerText = jaapCount;
     malaCount = 0;
-    mala.innerText = malaCount;
-    saveCount();
+    lastSavedDate = now;
+
+    localStorage.setItem('dailyCounts', JSON.stringify(dailyCounts));
+    localStorage.setItem('lastSavedDate', now.toISOString());
+    localStorage.setItem('count', count);
+    localStorage.setItem('jaap', jaapCount);
+    localStorage.setItem('mala', malaCount);
+  }
+}
+
+function updateUI() {
+  countElement.innerText = count;
+  jaap.innerText = jaapCount;
+  mala.innerText = malaCount;
+
+  // Filter entries from last 30 days
+  const now = new Date();
+  const last30Days = dailyCounts.filter(entry => {
+    const entryDate = new Date(entry.date);
+    return (now - entryDate) <= 30 * 24 * 60 * 60 * 1000;
+  });
+
+  // Render entries
+  historyContainer.innerHTML = '';
+  last30Days.reverse().forEach(entry => {
+    const div = document.createElement('div');
+    div.className = 'history-entry fade-in';
+    div.innerText = `${entry.date}: ${entry.count} Jaap`;
+    historyContainer.appendChild(div);
+  });
+}
+
+
+incrementBtn.addEventListener('click', () => {
+  checkAndResetDaily();
+  count++;
+  jaapCount++;
+
+  if (jaapCount >= 108) {
+    malaCount++;
+    jaapCount = 0;
+  }
+
+  localStorage.setItem('count', count);
+  localStorage.setItem('jaap', jaapCount);
+  localStorage.setItem('mala', malaCount);
+  localStorage.setItem('lastSavedDate', new Date().toISOString());
+
+  updateUI();
 });
 
-// Check reset time every minute
-setInterval(checkResetTime, 60000);
+resetBtn.addEventListener('click', () => {
+  count = 0;
+  jaapCount = 0;
+  malaCount = 0;
+  localStorage.setItem('count', count);
+  localStorage.setItem('jaap', jaapCount);
+  localStorage.setItem('mala', malaCount);
+  updateUI();
+});
 
-// Initial save on page load
-saveCount();
+toggleBgBtn.addEventListener('click', () => {
+  currentImageIndex = (currentImageIndex + 1) % backgroundImages.length;
+  document.body.style.backgroundImage = backgroundImages[currentImageIndex];
+});
+
+// First time setup
+checkAndResetDaily();
+updateUI();
